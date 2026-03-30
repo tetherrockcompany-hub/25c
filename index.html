@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>25도씨 - 오픈마켓 입점/상품등록/EMP세팅 대행</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans KR', sans-serif; color: #333; background: #fff; line-height: 1.7; }
+
+  /* === HERO === */
+  .hero {
+    background: #fff;
+    padding: 50px 20px 40px;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .hero-left { flex: 1; }
+  .hero-left h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #222;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .hero-left p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.7;
+  }
+  .hero-right { flex-shrink: 0; text-align: center; }
+  .hero-logo-img {
+    font-size: 64px;
+    font-weight: 900;
+    letter-spacing: -3px;
+    line-height: 1;
+  }
+  .hero-logo-img .c2 { color: #E5004F; }
+  .hero-logo-img .c5 { color: #FFB800; }
+  .hero-logo-img .deg { color: #4CAF50; font-size: 24px; vertical-align: super; }
+  .hero-logo-img .cC { color: #0052CC; }
+  .hero-logo-sub { font-size: 14px; color: #999; margin-top: 4px; font-weight: 500; }
+  .hero-divider { width: 100%; height: 1px; background: #eee; }
+
+  /* === TRUST BAR === */
+  .trust-bar {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 28px 20px;
+    background: #fafafa;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    flex-wrap: wrap;
+  }
+  .trust-item { text-align: center; }
+  .trust-number { font-size: 26px; font-weight: 800; color: #222; }
+  .trust-label { font-size: 12px; color: #888; margin-top: 2px; }
+
+  /* === SECTION === */
+  .section {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 44px 20px;
+  }
+  .section-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; color: #222; }
+  .section-sub { font-size: 14px; color: #888; margin-bottom: 28px; }
+  .section-divider {
+    width: 36px; height: 3px;
+    background: #FFB800; border-radius: 2px; margin-bottom: 16px;
+  }
+  .bg-section {
+    background: #fafafa;
+    padding: 44px 20px;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  /* === SERVICE CARDS === */
+  .service-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .service-card {
+    background: #fafafa;
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid #eee;
+  }
+  .service-card.recommend-card {
+    grid-column: 1 / -1;
+    background: #fafafa;
+    border: 1px solid #eee;
+    position: relative;
+  }
+  .service-card.recommend-card::before {
+    content: '추천';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: #FFB800;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 12px;
+    border-radius: 10px;
+  }
+
+  /* === TIER PRICING CARDS === */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .tier-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 14px;
+    padding: 24px 18px;
+    text-align: center;
+  }
+  .tier-card.popular {
+    border: 1px solid #eee;
+  }
+  .tier-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .tier-price {
+    font-size: 28px;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 4px;
+  }
+  .tier-price span { font-size: 14px; font-weight: 500; color: #888; }
+  .tier-vat {
+    font-size: 11px;
+    color: #aaa;
+    margin-bottom: 16px;
+  }
+  .tier-desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.7;
+    text-align: left;
+    margin-bottom: 14px;
+    padding: 14px;
+    background: #f8f8f8;
+    border-radius: 8px;
+  }
+  .tier-detail {
+    font-size: 12px;
+    color: #888;
+    text-align: left;
+    line-height: 1.8;
+  }
+  .tier-detail span { display: block; }
+  .service-icon { font-size: 28px; margin-bottom: 10px; }
+  .service-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: #222; }
+  .service-card p { font-size: 13px; color: #666; line-height: 1.6; }
+  .service-card .sub-list {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #888;
+    line-height: 1.8;
+  }
+
+  /* === FEATURE BOX (상품 이관, EMP) === */
+  .feature-box {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .feature-box h3 {
+    font-size: 17px;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 16px;
+  }
+  .feature-box h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 4px;
+  }
+  .point-item {
+    margin-bottom: 16px;
+    padding-left: 0;
+  }
+  .point-label {
+    display: inline-block;
+    background: #FFB800;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+  }
+  .point-item p {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .recommend-box {
+    background: #f8f8f8;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 20px;
+  }
+  .recommend-box h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #FFB800;
+    margin-bottom: 8px;
+  }
+  .recommend-box p {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.8;
+  }
+
+  /* === PLATFORM TEXT LIST === */
+  .platform-grid {
+    columns: 3;
+    column-gap: 24px;
+    font-size: 13px;
+    color: #555;
+    line-height: 2;
+  }
+  .platform-grid span { display: block; break-inside: avoid; }
+  .platform-note { margin-top: 16px; font-size: 12px; color: #aaa; }
+
+  /* === PROCESS === */
+  .process-item { display: flex; gap: 18px; margin-bottom: 28px; }
+  .process-num {
+    width: 40px; height: 40px; min-width: 40px;
+    background: #FFB800; color: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 16px;
+  }
+  .process-content h3 { font-size: 15px; font-weight: 700; margin-bottom: 3px; color: #222; }
+  .process-content p { font-size: 13px; color: #666; }
+
+  /* === PRICING === */
+  .pricing-table {
+    width: 100%; border-collapse: collapse;
+    border-radius: 10px; overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+  }
+  .pricing-table thead th {
+    background: #333; color: #fff;
+    padding: 12px 14px; font-size: 13px; font-weight: 600; text-align: left;
+  }
+  .pricing-table tbody td {
+    padding: 12px 14px; font-size: 13px;
+    border-bottom: 1px solid #eee; vertical-align: top;
+  }
+  .pricing-table tbody tr:nth-child(even) { background: #fafafa; }
+  .price { font-weight: 700; color: #E5004F; white-space: nowrap; }
+  .pricing-note {
+    margin-top: 14px; padding: 14px;
+    background: #FFF8E1; border-radius: 10px;
+    font-size: 12px; color: #777; border-left: 3px solid #FFB800;
+  }
+
+  /* === CHECKLIST (고객 준비물) === */
+  .checklist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .checklist-card {
+    background: #fafafa;
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid #eee;
+  }
+  .checklist-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #FFB800;
+  }
+  .checklist-card p {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.8;
+  }
+
+  /* === WHY US === */
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .why-card {
+    text-align: center; padding: 22px 14px;
+    background: #fafafa; border-radius: 14px; border: 1px solid #eee;
+  }
+  .why-card .icon { font-size: 30px; margin-bottom: 10px; }
+  .why-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .why-card p { font-size: 12px; color: #888; }
+
+  /* === REVIEW === */
+  .review-card {
+    background: #fafafa; border-radius: 14px; padding: 22px;
+    margin-bottom: 14px; border: 1px solid #eee;
+  }
+  .review-header {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 10px;
+  }
+  .review-stars { color: #FFB800; font-size: 14px; }
+  .review-tag {
+    font-size: 11px; background: #222; color: #fff;
+    padding: 2px 10px; border-radius: 20px; font-weight: 500;
+  }
+  .review-text { font-size: 13px; color: #444; line-height: 1.8; margin-bottom: 8px; }
+  .review-author { font-size: 12px; color: #aaa; }
+
+  /* === FAQ === */
+  .faq-item { border-bottom: 1px solid #eee; padding: 18px 0; }
+  .faq-q { font-size: 14px; font-weight: 700; color: #222; margin-bottom: 6px; }
+  .faq-q::before { content: 'Q. '; color: #FFB800; font-weight: 800; }
+  .faq-a { font-size: 13px; color: #666; padding-left: 22px; }
+
+  @media (max-width: 600px) {
+    .hero { flex-direction: column-reverse; text-align: center; }
+    .hero-left h1 { font-size: 22px; }
+    .service-grid { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+    .platform-grid { columns: 2; }
+    .checklist-grid { grid-template-columns: 1fr; }
+    .tier-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <h1>오픈마켓 입점부터 상품등록까지<br>깔끔하게 세팅해드립니다</h1>
+    <p>스마트스토어, 쿠팡, AliExpress, 컬리 등 130개+ 마켓<br>입점 대행 · 상품등록 · 상품이관 · 플레이오토(EMP) 세팅</p>
+  </div>
+  <div class="hero-right">
+    <div class="hero-logo-img">
+      <span class="c2">2</span><span class="c5">5</span><span class="deg">&deg;</span><span class="cC">C</span>
+    </div>
+    <div class="hero-logo-sub">25도씨</div>
+  </div>
+</div>
+<div class="hero-divider"></div>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item">
+    <div class="trust-number">13년</div>
+    <div class="trust-label">운영 경력</div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-number">70+</div>
+    <div class="trust-label">누적 고객사</div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-number">130+</div>
+    <div class="trust-label">지원 마켓 수</div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-number">98%</div>
+    <div class="trust-label">고객 만족도</div>
+  </div>
+</div>
+
+<!-- 서비스 소개 -->
+<div class="section">
+  <div class="section-divider"></div>
+  <div class="section-title">제공 서비스</div>
+  <div class="section-sub">필요한 서비스만 골라서 이용하세요</div>
+
+  <div class="service-grid">
+    <!-- 추천: 플레이오토(EMP) 세팅 -->
+    <div class="service-card recommend-card">
+      <div class="service-icon">⚙️</div>
+      <h3>플레이오토(EMP) 세팅 서비스</h3>
+      <p>사방넷과 같은 통합 솔루션이지만, 더 직관적이고 사용하기 쉽습니다.<br>
+      통합 솔루션의 첫 기초 세팅은 가장 중요합니다. 상품, 주문, 배송, C/S까지 한번에 관리하실 수 있도록 오랜 경험을 토대로 세팅을 도와드리겠습니다.</p>
+      <div class="sub-list">
+        타사(사방넷, 샵링커, 마켓플러스 등)에서 이전이 필요하신 분들도 상담주세요.
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">🏪</div>
+      <h3>마켓 입점 대행</h3>
+      <p>원하는 마켓에 입점 서류 준비부터 심사, 스토어 초기 세팅까지 대행합니다.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📦</div>
+      <h3>상품등록 대행</h3>
+      <p>상품명, 이미지, 옵션 등 마켓의 수수료율별로 최적화된 상품을 등록해드립니다.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔄</div>
+      <h3>상품 이관</h3>
+      <p>기존 스토어 상품을 API로 추출하여 다른 마켓에 정확하게 일괄 등록합니다.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔍</div>
+      <h3>상품 크롤링</h3>
+      <p>공급처나 타 스토어의 상품 데이터를 크롤링하여 수집합니다.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📊</div>
+      <h3>마진 분석 서비스</h3>
+      <p>각 마켓별 수수료, 택배비를 반영한 마진 계산 프로그램을 제공합니다. (별도)</p>
+    </div>
+  </div>
+</div>
+
+<!-- 진행 과정 -->
+<div class="bg-section">
+  <div class="section" style="padding-top: 0; padding-bottom: 0;">
+    <div class="section-divider"></div>
+    <div class="section-title">진행 과정</div>
+    <div class="section-sub">상담부터 상품등록 완료까지 체계적으로 진행합니다</div>
+
+    <div class="process-list">
+      <div class="process-item">
+        <div class="process-num">1</div>
+        <div class="process-content">
+          <h3>상담 & 요구사항 파악</h3>
+          <p>판매할 상품, 입점 희망 마켓, 수량 등을 파악하여 최적의 플랜을 제안합니다.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">2</div>
+        <div class="process-content">
+          <h3>견적 확인 & 계약</h3>
+          <p>서비스 범위와 가격을 명확히 안내드린 후 진행합니다.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">3</div>
+        <div class="process-content">
+          <h3>입점 & 스토어 세팅</h3>
+          <p>입점 서류 준비, 심사 대행, 스토어 기본 세팅(배송, 카테고리 등)을 완료합니다.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">4</div>
+        <div class="process-content">
+          <h3>상품등록 완료</h3>
+          <p>상품 데이터 정리 → 옵션/이미지 세팅 → 마켓별 최적화 등록까지 완료합니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 입점 · 등록 · 크롤링 가격표 -->
+<div class="section">
+  <div class="section-divider"></div>
+  <div class="section-title">입점 · 등록 · 크롤링</div>
+  <div class="section-sub">필요한 서비스만 선택하여 합리적으로 이용하세요</div>
+
+  <table class="pricing-table">
+    <thead>
+      <tr>
+        <th>서비스</th>
+        <th>내용</th>
+        <th>가격</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>마켓 입점 대행</strong></td>
+        <td>현업이 바쁘신 분</td>
+        <td class="price">마켓당 20,000원</td>
+      </tr>
+      <tr>
+        <td><strong>상품등록</strong></td>
+        <td>1개 상품 x 5개 쇼핑몰 등록</td>
+        <td class="price">건당 5,000원</td>
+      </tr>
+      <tr>
+        <td><strong>상품등록 (11~50개)</strong></td>
+        <td>대량등록 할인 적용</td>
+        <td class="price">건당 3,000원~</td>
+      </tr>
+      <tr>
+        <td><strong>상품등록 (50개 이상)</strong></td>
+        <td>대량등록 추가 할인</td>
+        <td class="price">별도 협의</td>
+      </tr>
+      <tr>
+        <td><strong>상품 크롤링</strong></td>
+        <td>공급처/타 스토어 상품 데이터 수집</td>
+        <td class="price">별도 협의</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pricing-note">
+    * 상품 수량, 마켓 수, 작업 범위에 따라 가격이 달라집니다.<br>
+    * VAT 별도
+  </div>
+</div>
+
+<!-- 상품 데이터 이전 가격표 -->
+<div class="bg-section">
+  <div class="section" style="padding-top: 0; padding-bottom: 0;">
+    <div class="section-divider"></div>
+    <div class="section-title">상품 데이터 이전</div>
+    <div class="section-sub">상품 1개당 평균 200원 · 사람이 옮길 때 발생하는 오탈자, 누락 없이 완벽하게 이전합니다</div>
+
+    <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 18px; margin-bottom: 20px; font-size: 13px; color: #555; line-height: 1.9;">
+      <strong style="color: #222;">이런 이전이 가능합니다</strong><br>
+      자사몰 → 쿠팡, 스마트스토어 복사등록<br>
+      스마트스토어 → 스마트스토어 복사등록<br>
+      스마트스토어 → 쿠팡, 11번가 등 타 마켓 복사등록<br>
+      <span style="font-size: 12px; color: #aaa;">* API 기반으로 상품명, 이미지, 옵션 등 데이터를 그대로 이전합니다</span>
+    </div>
+
+    <div class="tier-grid">
+      <div class="tier-card">
+        <div class="tier-name">100개 이하</div>
+        <div class="tier-price">300<span>원/개</span></div>
+        <div class="tier-vat">VAT 별도</div>
+        <div class="tier-desc">
+          소규모 상품 이전<br>
+          API 기반 정확한 데이터 이동
+        </div>
+      </div>
+
+      <div class="tier-card">
+        <div class="tier-name">500개 이하</div>
+        <div class="tier-price">200<span>원/개</span></div>
+        <div class="tier-vat">VAT 별도</div>
+        <div class="tier-desc">
+          중규모 상품 이전<br>
+          대량 할인 적용
+        </div>
+      </div>
+
+      <div class="tier-card">
+        <div class="tier-name">1,000개 이하</div>
+        <div class="tier-price">150<span>원/개</span></div>
+        <div class="tier-vat">VAT 별도</div>
+        <div class="tier-desc">
+          대규모 상품 이전<br>
+          추가 할인 적용
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 14px; font-size: 14px; color: #555;">
+      <strong>1,000개 이상</strong> → 개당 <strong style="color: #E5004F;">100원</strong>
+    </div>
+
+    <!-- 단가 예시 -->
+    <div style="margin-top: 20px; background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 20px;">
+      <div style="font-size: 14px; font-weight: 700; color: #222; margin-bottom: 12px;">단가 예시</div>
+      <div style="font-size: 13px; color: #555; line-height: 2;">
+        <div style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+          네이버 스토어 상품 <strong>50개</strong> → 쿠팡 50개 이전 시<br>
+          <span style="color: #E5004F; font-weight: 700;">300원 × 50개 = 15,000원</span>
+        </div>
+        <div style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+          스마트스토어 상품 <strong>300개</strong> → 스마트스토어 B 복사등록 시<br>
+          <span style="color: #E5004F; font-weight: 700;">200원 × 300개 = 60,000원</span>
+        </div>
+        <div style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+          자사몰 상품 <strong>800개</strong> → 쿠팡 이전 시<br>
+          <span style="color: #E5004F; font-weight: 700;">150원 × 800개 = 120,000원</span>
+        </div>
+        <div style="padding: 8px 0;">
+          스마트스토어 상품 <strong>2,000개</strong> → 마켓컬리 이전 시<br>
+          <span style="color: #E5004F; font-weight: 700;">100원 × 2,000개 = 200,000원</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 플레이오토(EMP) 세팅 가격표 -->
+<div class="section">
+  <div class="section-divider"></div>
+  <div class="section-title">플레이오토(EMP) / 사방넷 세팅</div>
+  <div class="section-sub" style="margin-bottom: 6px;">여러 개의 쇼핑몰 관리가 필요하신 분</div>
+  <div class="section-sub">쇼핑몰 수와 상품 수에 따라 선택하세요</div>
+
+  <div class="tier-grid">
+    <div class="tier-card">
+      <div class="tier-name">Standard</div>
+      <div class="tier-price">200,000<span>원</span></div>
+      <div class="tier-vat">VAT 별도</div>
+      <div class="tier-desc">
+        쇼핑몰 5개 이하<br>
+        SKU(상품) 100개 미만<br>
+        세팅 및 연동
+      </div>
+      <div class="tier-detail">
+        <span>작업 기간: 3일</span>
+        <span>수정 횟수: 1회</span>
+        <span>컨설팅: 1회 (60분)</span>
+      </div>
+    </div>
+
+    <div class="tier-card">
+      <div class="tier-name">Deluxe</div>
+      <div class="tier-price">300,000<span>원</span></div>
+      <div class="tier-vat">VAT 별도</div>
+      <div class="tier-desc">
+        쇼핑몰 5개 이상<br>
+        SKU(상품) 100개 이상<br>
+        세팅 및 연동
+      </div>
+      <div class="tier-detail">
+        <span>작업 기간: 3일</span>
+        <span>수정 횟수: 1회</span>
+        <span>컨설팅: 1회 (60분)</span>
+      </div>
+    </div>
+
+    <div class="tier-card">
+      <div class="tier-name">Premium</div>
+      <div class="tier-price">500,000<span>원</span></div>
+      <div class="tier-vat">VAT 별도</div>
+      <div class="tier-desc">
+        쇼핑몰 10개 이상<br>
+        SKU(상품) 300개 이상<br>
+        세팅 및 연동
+      </div>
+      <div class="tier-detail">
+        <span>작업 기간: 5일</span>
+        <span>수정 횟수: 1회</span>
+        <span>컨설팅: 1회 (60분)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 상품 이관 상세 -->
+<div class="bg-section">
+  <div class="section" style="padding-top: 0; padding-bottom: 0;">
+    <div class="section-divider"></div>
+    <div class="section-title">상품 데이터 이전 서비스</div>
+    <div class="section-sub">이미 판매 중인 상품을 보유한 셀러라면 필수입니다</div>
+
+    <div class="feature-box">
+      <div class="recommend-box">
+        <h4>이런 분께 추천합니다</h4>
+        <p>
+          스마트스토어를 2개 이상 운영하며 상품을 공유하고 싶은 대표님<br>
+          스마트스토어 상품을 쿠팡, 신세계, 토스쇼핑 등으로 빠르게 확장하려는 대표님<br>
+          500개 이상 상품을 한 번에 이동·등록해야 하는 대표님
+        </p>
+      </div>
+
+      <h3>핵심 기능</h3>
+
+      <div class="point-item">
+        <span class="point-label">POINT 01</span>
+        <h4>자유로운 플랫폼 간 이동</h4>
+        <p>
+          스마트스토어 → 스마트스토어 : A스토어 상품을 B스토어로 완벽 복사<br>
+          스마트스토어 → 쿠팡 : 상품을 즉시 등록
+        </p>
+      </div>
+
+      <div class="point-item">
+        <span class="point-label">POINT 02</span>
+        <h4>엑셀 활용 일괄 수정</h4>
+        <p>단순 복사에서 끝나지 않습니다. 이동 시 엑셀로 상품명, 판매가 등을 원하는 대로 수정 등록이 가능합니다. (수수료율에 따른 가격 조정 등)</p>
+      </div>
+
+      <div class="point-item">
+        <span class="point-label">POINT 03</span>
+        <h4>정확한 데이터</h4>
+        <p>API키를 이용해서 등록하기 때문에 기존 등록 그대로 옮길 수 있으며, 썸네일·상세페이지 등 이미지가 별도로 필요하지 않습니다. 사람이 옮길 때 발생하는 오탈자, 누락 없이 완벽하게 이전합니다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 등록,이전 지원 플랫폼 -->
+<div class="section">
+  <div class="section-divider"></div>
+  <div class="section-title">등록·이전 지원 플랫폼</div>
+  <div class="section-sub">Ctrl+F 로 원하는 마켓을 검색해보세요 (130개+ 지원)</div>
+
+  <div class="platform-grid">
+    <span>네이버 스마트스토어</span>
+    <span>쿠팡</span>
+    <span>쿠팡 판매자로켓(로켓그로스)</span>
+    <span>11번가</span>
+    <span>11번가(신규)</span>
+    <span>G마켓</span>
+    <span>옥션</span>
+    <span>AliExpress</span>
+    <span>AliExpress (Global)</span>
+    <span>Alibaba.com</span>
+    <span>컬리</span>
+    <span>GSSHOP</span>
+    <span>롯데ON</span>
+    <span>롯데마트</span>
+    <span>롯데아이몰</span>
+    <span>LOTTE닷컴</span>
+    <span>CJ온스타일</span>
+    <span>SSG(통합)</span>
+    <span>신세계백화점(SSG)</span>
+    <span>토스 쇼핑</span>
+    <span>현대H몰 <em style="font-size:11px;color:#E5004F;">*이전불가(등록만가능)</em></span>
+    <span>현대리바트몰</span>
+    <span>홈플러스(new)</span>
+    <span>하이마트</span>
+    <span>LF몰 <em style="font-size:11px;color:#E5004F;">*이전불가(등록만가능)</em></span>
+    <span>LF스퀘어</span>
+    <span>LG전자 Living</span>
+    <span>W컨셉</span>
+    <span>29CM</span>
+    <span>무신사 <em style="font-size:11px;color:#E5004F;">*이전불가(등록만가능)</em></span>
+    <span>지그재그/포스티</span>
+    <span>에이블리</span>
+    <span>머스트잇</span>
+    <span>하프클럽</span>
+    <span>위즈위드</span>
+    <span>갤러리아</span>
+    <span>이랜드몰</span>
+    <span>이랜드몰-관리자</span>
+    <span>SSF</span>
+    <span>한샘몰</span>
+    <span>까사미아</span>
+    <span>경동나비엔</span>
+    <span>카카오톡스토어</span>
+    <span>카카오선물하기</span>
+    <span>텐바이텐</span>
+    <span>아트박스</span>
+    <span>핫트랙스</span>
+    <span>오늘의집</span>
+    <span>버킷스토어</span>
+    <span>크림(B2C)</span>
+    <span>캐시워크(캐시딜)</span>
+    <span>베이비빌리</span>
+    <span>캠핏</span>
+    <span>인터파크-도서</span>
+    <span>인터파크-도서(MD)</span>
+    <span>인터파크(MD)</span>
+    <span>인터파크-비즈마켓 <em style="font-size:11px;color:#E5004F;">*이전불가(등록만가능)</em></span>
+    <span>YES24</span>
+    <span>카페24</span>
+    <span>카페24_유튜브 쇼핑 <em style="font-size:11px;color:#E5004F;">*이전불가(등록만가능)</em></span>
+    <span>메이크샵</span>
+    <span>고도몰</span>
+    <span>고도몰5</span>
+    <span>MakeFG</span>
+    <span>e나무 임대형</span>
+    <span>식스샵</span>
+    <span>아임웹</span>
+    <span>샵바이(본사)</span>
+    <span>샵바이(파트너)</span>
+    <span>Qoo10(sg)</span>
+    <span>Qoo10(jp)</span>
+    <span>72TIME</span>
+    <span>셀링콕</span>
+    <span>오가게</span>
+    <span>KT알파쇼핑</span>
+    <span>SK스토아</span>
+    <span>신세계TV쇼핑</span>
+    <span>공영홈쇼핑 <em style="font-size:11px;color:#E5004F;">*이전불가(등록만가능)</em></span>
+    <span>W쇼핑 <em style="font-size:11px;color:#E5004F;">*이전불가(등록만가능)</em></span>
+    <span>홈쇼핑모아</span>
+    <span>SBS골프숍</span>
+    <span>세이골프</span>
+    <span>스포츠매니아</span>
+    <span>전자랜드 <em style="font-size:11px;color:#E5004F;">*이전불가(등록만가능)</em></span>
+    <span>농수산쇼핑몰</span>
+    <span>지트리트</span>
+    <span>홈앤쇼핑</span>
+    <span>오테이스트몰</span>
+    <span>블로그페이</span>
+    <span>바이이즈</span>
+    <span>바이즐</span>
+    <span>보리보리</span>
+    <span>500M</span>
+    <span>이지웰몰</span>
+    <span>베네피아</span>
+    <span>도매꾹(신)/도매매</span>
+    <span>도매창고</span>
+    <span>도매의신</span>
+    <span>도매아토즈</span>
+    <span>오너클랜</span>
+    <span>셀러허브</span>
+    <span>아이스타일</span>
+    <span>SKINRx</span>
+    <span>브리치</span>
+    <span>동원몰</span>
+    <span>가방팝</span>
+    <span>스룩페이</span>
+    <span>우마켓</span>
+    <span>엔터식스</span>
+    <span>디애니몰</span>
+    <span>배민상회</span>
+    <span>올웨이즈</span>
+    <span>펀앤쇼핑</span>
+    <span>할인중독/공구마켓/심쿵할인</span>
+    <span>AK몰(백화점)</span>
+    <span>카사 <em style="font-size:11px;color:#E5004F;">*이전불가(등록만가능)</em></span>
+    <span>후추통 <em style="font-size:11px;color:#E5004F;">*이전불가(등록만가능)</em></span>
+    <span>티몬 <em style="font-size:11px;color:#E5004F;">*이전불가(등록만가능)</em></span>
+  </div>
+  <div class="platform-note">* 플레이오토(EMP) 기반 연동 · 위 목록 외 추가 마켓도 상담 시 안내드립니다.<br>* <span style="color:#E5004F;">이전불가(등록만가능)</span> 표시된 마켓은 상품 데이터 이전이 불가하며, 수동 등록만 가능합니다.</div>
+</div>
+
+<!-- 고객 준비물 -->
+<div class="bg-section">
+  <div class="section" style="padding-top: 0; padding-bottom: 0;">
+    <div class="section-divider"></div>
+    <div class="section-title">고객 준비물</div>
+    <div class="section-sub">서비스 진행 전 아래 서류를 준비해주세요</div>
+
+    <div class="checklist-grid">
+      <div class="checklist-card">
+        <h4>미입점 고객</h4>
+        <p>
+          사업자등록증<br>
+          통신판매신고증<br>
+          신분증 사본 (필요한 경우)<br>
+          통장 사본 (필요한 경우)<br>
+          <span style="font-size: 12px; color: #aaa;">* 쇼핑몰마다 다를 수 있습니다</span>
+        </p>
+      </div>
+      <div class="checklist-card">
+        <h4>입점 고객</h4>
+        <p>
+          계정 공유 또는 매니저 초대<br>
+          <span style="font-size: 12px; color: #aaa;">* 보안이 걱정되시면 원격으로 도와드립니다</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 왜 25도씨 -->
+<div class="section">
+  <div class="section-divider"></div>
+  <div class="section-title">왜 25도씨인가요?</div>
+  <div class="section-sub">13년 경력의 오픈마켓 전문 팀입니다</div>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="icon">🎯</div>
+      <h3>초기 세팅 전문</h3>
+      <p>월 관리비 없이 세팅만 깔끔하게. 이후 운영은 고객님이 직접.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">⚡</div>
+      <h3>빠른 작업 속도</h3>
+      <p>플레이오토(EMP) 기반 자동화로 대량등록도 빠르게 처리합니다.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">🛡️</div>
+      <h3>130개+ 마켓 대응</h3>
+      <p>국내외 주요 마켓 전체를 지원합니다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 고객 후기 -->
+<div class="bg-section">
+  <div class="section" style="padding-top: 0; padding-bottom: 0;">
+    <div class="section-divider"></div>
+    <div class="section-title">고객 후기</div>
+    <div class="section-sub">실제 고객사들의 후기입니다</div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-tag">EMP 세팅</span>
+      </div>
+      <div class="review-text">
+        사방넷 쓰다가 EMP로 이전했는데, 초기 세팅을 꼼꼼하게 잡아주셔서 바로 업무에 투입할 수 있었습니다. 주문·배송·CS까지 한번에 관리되니까 진작 바꿀걸 싶었어요.
+      </div>
+      <div class="review-author">종합몰 운영자 A님 · 2026.02</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-tag">다중 마켓 이관</span>
+      </div>
+      <div class="review-text">
+        스마트스토어에만 팔고 있었는데, 쿠팡이랑 11번가까지 확장하고 싶었어요. 상품 100개 넘게 있었는데 빠르게 이관해주시고 옵션도 마켓별로 맞춰주셔서 매출이 확 늘었습니다.
+      </div>
+      <div class="review-author">생활용품 판매자 B님 · 2026.01</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-tag">입점 + 대량등록</span>
+      </div>
+      <div class="review-text">
+        신규 브랜드 론칭하면서 여러 마켓에 동시 입점해야 했는데, 200개 상품을 일주일 만에 전부 등록해주셨어요. 현업이 바빠서 직접 할 시간이 없었는데 정말 편했습니다.
+      </div>
+      <div class="review-author">뷰티 브랜드 C님 · 2025.12</div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="section">
+  <div class="section-divider"></div>
+  <div class="section-title">자주 묻는 질문</div>
+
+  <div class="faq-item">
+    <div class="faq-q">작업 기간은 얼마나 걸리나요?</div>
+    <div class="faq-a">입점 대행은 마켓별로 3~7일, 상품등록은 수량에 따라 1~5일 정도 소요됩니다.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">월 관리비가 있나요?</div>
+    <div class="faq-a">없습니다. 25도씨는 초기 세팅 대행 전문입니다. 세팅 완료 후 운영은 고객님이 직접 하시면 됩니다.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">상품 이미지가 없어도 되나요?</div>
+    <div class="faq-a">기존 스토어나 공급처에서 이미지를 크롤링하여 가져올 수 있습니다. (크롤링 비용 별도)</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">사업자등록증이 없어도 되나요?</div>
+    <div class="faq-a">대부분의 마켓은 사업자등록증이 필요합니다. 아직 없으신 경우 사업자 등록 절차도 안내해드립니다.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">플레이오토(EMP)가 뭔가요?</div>
+    <div class="faq-a">사방넷, 샵링커와 같은 통합 쇼핑몰 관리 솔루션입니다. 상품, 주문, 배송, CS를 한 곳에서 관리할 수 있으며, 더 직관적이고 사용하기 쉽습니다.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">계정 공유가 걱정됩니다.</div>
+    <div class="faq-a">매니저 권한으로 초대하거나, 원격 접속으로 작업할 수 있습니다. 보안이 걱정되시면 원격 방식을 추천드립니다.</div>
+  </div>
+</div>
+
+</body>
+</html>
